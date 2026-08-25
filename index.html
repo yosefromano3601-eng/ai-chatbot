@@ -1,295 +1,346 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chatbot</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chatbot</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #0b0f14;
-            color: white;
-            height: 100vh;
-            overflow: hidden;
-        }
+    body {
+      font-family: Arial, sans-serif;
+      background: #080b12;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        .app {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    .app {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background:
+        radial-gradient(circle at top right, #18233d 0%, transparent 35%),
+        radial-gradient(circle at bottom left, #111b30 0%, transparent 40%),
+        #080b12;
+    }
 
-        .header {
-            height: 70px;
-            border-bottom: 1px solid #202833;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 22px;
-            background: #0f141b;
-        }
+    header {
+      padding: 22px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(20px);
+    }
 
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-        }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: bold;
+    }
 
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #9ca6b3;
-            font-size: 14px;
-        }
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #6c63ff, #00d4ff);
+      font-size: 21px;
+      box-shadow: 0 0 25px rgba(108,99,255,0.35);
+    }
 
-        .dot {
-            width: 8px;
-            height: 8px;
-            background: #35d07f;
-            border-radius: 50%;
-        }
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #9ca3af;
+      font-size: 13px;
+    }
 
-        .chat {
-            flex: 1;
-            overflow-y: auto;
-            padding: 30px 20px 120px;
-        }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #35e88b;
+      box-shadow: 0 0 10px #35e88b;
+    }
 
-        .welcome {
-            max-width: 700px;
-            margin: 70px auto 40px;
-            text-align: center;
-        }
+    .chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 25px 18px 130px;
+    }
 
-        .welcome h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-        }
+    .welcome {
+      text-align: center;
+      margin: 50px auto 35px;
+      max-width: 500px;
+    }
 
-        .welcome p {
-            color: #8f9aaa;
-            font-size: 18px;
-            line-height: 1.6;
-        }
+    .welcome-icon {
+      width: 75px;
+      height: 75px;
+      margin: auto;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 38px;
+      background: linear-gradient(135deg, #6c63ff, #00d4ff);
+      box-shadow: 0 15px 50px rgba(0,212,255,0.15);
+    }
 
-        .messages {
-            max-width: 800px;
-            margin: auto;
-        }
+    .welcome h1 {
+      margin-top: 22px;
+      font-size: 32px;
+    }
 
-        .message {
-            display: flex;
-            margin-bottom: 20px;
-        }
+    .welcome p {
+      margin-top: 12px;
+      color: #9ca3af;
+      line-height: 1.6;
+    }
 
-        .message.user {
-            justify-content: flex-start;
-        }
+    .message {
+      max-width: 850px;
+      margin: 15px auto;
+      display: flex;
+    }
 
-        .message.bot {
-            justify-content: flex-end;
-        }
+    .message.user {
+      justify-content: flex-start;
+    }
 
-        .bubble {
-            max-width: 75%;
-            padding: 14px 18px;
-            border-radius: 18px;
-            line-height: 1.6;
-            font-size: 16px;
-        }
+    .message.bot {
+      justify-content: flex-end;
+    }
 
-        .user .bubble {
-            background: #1c2633;
-            border-bottom-left-radius: 5px;
-        }
+    .bubble {
+      max-width: 80%;
+      padding: 14px 17px;
+      border-radius: 18px;
+      line-height: 1.6;
+      font-size: 15px;
+      white-space: pre-wrap;
+    }
 
-        .bot .bubble {
-            background: #151b24;
-            border: 1px solid #252e3a;
-            border-bottom-right-radius: 5px;
-        }
+    .user .bubble {
+      background: linear-gradient(135deg, #5c54e8, #4c46bd);
+      border-bottom-right-radius: 5px;
+    }
 
-        .input-area {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 18px 20px 22px;
-            background: linear-gradient(
-                transparent,
-                #0b0f14 25%
-            );
-        }
+    .bot .bubble {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-bottom-left-radius: 5px;
+    }
 
-        .input-box {
-            max-width: 800px;
-            margin: auto;
-            background: #151b23;
-            border: 1px solid #303a47;
-            border-radius: 18px;
-            padding: 8px;
-            display: flex;
-            gap: 8px;
-        }
+    .input-area {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 15px;
+      background: linear-gradient(
+        transparent,
+        rgba(8,11,18,0.95) 35%
+      );
+    }
 
-        textarea {
-            flex: 1;
-            resize: none;
-            border: none;
-            outline: none;
-            background: transparent;
-            color: white;
-            padding: 12px;
-            font-size: 16px;
-            font-family: inherit;
-            min-height: 45px;
-        }
+    .input-box {
+      max-width: 850px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      background: rgba(20,25,38,0.95);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.45);
+      backdrop-filter: blur(20px);
+    }
 
-        textarea::placeholder {
-            color: #6f7a88;
-        }
+    textarea {
+      flex: 1;
+      resize: none;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: white;
+      padding: 12px;
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+      min-height: 45px;
+      max-height: 120px;
+    }
 
-        button {
-            width: 48px;
-            height: 48px;
-            border: none;
-            border-radius: 14px;
-            background: white;
-            color: #0b0f14;
-            font-size: 20px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+    textarea::placeholder {
+      color: #687083;
+    }
 
-        button:hover {
-            transform: scale(1.05);
-        }
+    button {
+      width: 48px;
+      height: 48px;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #6c63ff, #00bfe8);
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+      flex-shrink: 0;
+    }
 
-        @media (max-width: 600px) {
-            .welcome h1 {
-                font-size: 32px;
-            }
+    button:hover {
+      transform: scale(1.05);
+    }
 
-            .welcome p {
-                font-size: 16px;
-            }
+    button:active {
+      transform: scale(0.95);
+    }
 
-            .bubble {
-                max-width: 85%;
-            }
-        }
-    </style>
+    .typing {
+      display: none;
+      color: #9ca3af;
+      font-size: 13px;
+      max-width: 850px;
+      margin: 10px auto;
+    }
+
+    @media (max-width: 600px) {
+      .welcome {
+        margin-top: 35px;
+      }
+
+      .welcome h1 {
+        font-size: 27px;
+      }
+
+      .bubble {
+        max-width: 88%;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="app">
+  <div class="app">
 
-    <header class="header">
-        <div class="logo">AI Chatbot</div>
+    <header>
+      <div class="logo">
+        <div class="logo-icon">✦</div>
+        <span>AI Chatbot</span>
+      </div>
 
-        <div class="status">
-            <span class="dot"></span>
-            Online
-        </div>
+      <div class="status">
+        <span class="dot"></span>
+        Online
+      </div>
     </header>
 
     <main class="chat" id="chat">
 
-        <div class="welcome" id="welcome">
-            <h1>מה קורה?</h1>
-            <p>
-                אני כאן כדי לענות לך על שאלות.
-                <br>
-                וכן, כנראה שגם לשפוט אותך קצת.
-            </p>
-        </div>
-
-        <div class="messages" id="messages"></div>
+      <div class="welcome" id="welcome">
+        <div class="welcome-icon">✦</div>
+        <h1>איך אפשר לעזור?</h1>
+        <p>
+          דבר איתי, שאל שאלות, תבקש רעיונות,
+          או פשוט תבדוק אם אני באמת חכם כמו שאני טוען.
+        </p>
+      </div>
 
     </main>
 
-    <div class="input-area">
-
-        <div class="input-box">
-
-            <textarea
-                id="messageInput"
-                placeholder="כתוב הודעה..."
-                rows="1"
-            ></textarea>
-
-            <button onclick="sendMessage()">↑</button>
-
-        </div>
-
+    <div class="typing" id="typing">
+      AI חושב...
     </div>
 
-</div>
+    <div class="input-area">
+      <div class="input-box">
 
-<script>
+        <textarea
+          id="messageInput"
+          placeholder="כתוב הודעה..."
+          rows="1"
+        ></textarea>
+
+        <button onclick="sendMessage()">➤</button>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
 
     const input = document.getElementById("messageInput");
-    const messages = document.getElementById("messages");
+    const chat = document.getElementById("chat");
     const welcome = document.getElementById("welcome");
+    const typing = document.getElementById("typing");
+
+    input.addEventListener("keydown", function(event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
 
     function addMessage(text, type) {
 
-        const message = document.createElement("div");
-        message.className = "message " + type;
+      if (welcome) {
+        welcome.style.display = "none";
+      }
 
-        const bubble = document.createElement("div");
-        bubble.className = "bubble";
-        bubble.textContent = text;
+      const message = document.createElement("div");
+      message.className = "message " + type;
 
-        message.appendChild(bubble);
-        messages.appendChild(message);
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
 
-        document.getElementById("chat").scrollTop =
-            document.getElementById("chat").scrollHeight;
+      message.appendChild(bubble);
+      chat.appendChild(message);
+
+      chat.scrollTop = chat.scrollHeight;
     }
 
     function sendMessage() {
 
-        const text = input.value.trim();
+      const text = input.value.trim();
 
-        if (!text) return;
+      if (!text) return;
 
-        welcome.style.display = "none";
+      addMessage(text, "user");
 
-        addMessage(text, "user");
+      input.value = "";
 
-        input.value = "";
+      typing.style.display = "block";
 
-        setTimeout(() => {
+      setTimeout(() => {
 
-            addMessage(
-                "קיבלתי את ההודעה. כרגע אני עדיין בלי מוח אמיתי, כי עוד לא חיברנו אותי ל־AI. זה השלב הבא.",
-                "bot"
-            );
+        typing.style.display = "none";
 
-        }, 600);
+        addMessage(
+          "קיבלתי את ההודעה שלך. הממשק עובד. השלב הבא הוא לחבר אותי למודל AI אמיתי באמצעות API.",
+          "bot"
+        );
+
+      }, 900);
     }
 
-    input.addEventListener("keydown", function(event) {
-
-        if (event.key === "Enter" && !event.shiftKey) {
-
-            event.preventDefault();
-
-            sendMessage();
-        }
-
-    });
-
-</script>
+  </script>
 
 </body>
 </html>
